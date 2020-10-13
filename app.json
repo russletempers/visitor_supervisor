@@ -1,6 +1,6 @@
 {
   "name": "visitor_supervisor",
-  "repository": "https://github.com/victorgreen098/visitor_supervisor",
+  "repository": "https://github.com/russletempers/visitor_supervisor",
   "stack": "container",
   "env": {
     "MEGA_EM": {},
