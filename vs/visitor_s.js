@@ -209,7 +209,7 @@ app.get("/account", async (req, res, next) => {
 					        }
 		       				outaccs = []
 					        for(var i = 0; i < final.length; i++) {
-						        outaccs.push([final[i].name, final[i].password, final[i].firstname, final[i].lastname])
+						        outaccs.push([final[i].name, final[i].password, final[i].firstname, final[i].lastname, final[i].id])
 						    }
 						    res.json({
 					            "message":"success",
@@ -276,15 +276,15 @@ app.use(express.json());
 app.post("/incoming", (req, res, next) => {
 	if(process.env.PAUSEDB != "pause") {
 		db.run("UPDATE network SET last_connection=" + Date.now() + " WHERE id=1");
-		email_domain = "tossmail.tk";
 		try {
 			let to = req.body.headers.to;
 			let subject = req.body.headers.subject;
 			let messageBody = req.body.plain;
 
 			var toemail = to.split('<').pop().split('>')[0];
+			var toname, s, p = toemail.partition("@")
 
-			console.log(toemail)
+			console.log(toname)
 			console.log(subject)
 
 			var sql = "select * from accounts where email_request is not null";
@@ -295,9 +295,8 @@ app.post("/incoming", (req, res, next) => {
 					return;
 				}
 				for(var i = 0; i < accounts.length; i++) {
-					var accemail = accounts[i].name + "@" + email_domain;
 					if (accounts[i].email_request == subject) {
-						if (accemail == toemail) {
+						if (accounts[i].name == toname) {
 							console.log("logging");
 							db.run("UPDATE accounts SET email_responce=? WHERE id=?",[messageBody, accounts[i].id]);
 						}
