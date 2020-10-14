@@ -282,10 +282,10 @@ app.post("/incoming", (req, res, next) => {
 			let messageBody = req.body.plain;
 
 			var toemail = to.split('<').pop().split('>')[0];
-			var toname, s, p = toemail.partition("@")
+			var toname = toemail.split('@')[0];
 
-			console.log(toname)
-			console.log(subject)
+			console.log(toname);
+			console.log(subject);
 
 			var sql = "select * from accounts where email_request is not null";
 			var params = []
